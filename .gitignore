@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.log
+*.mp4
+*.mp3
+*.jpg
+dataset/
+voice_dataset/
+deepfake_model.h5
+voice_model.pkl
