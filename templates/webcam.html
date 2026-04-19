@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Webcam</h2>
+
+<video id="video" autoplay></video>
+<h3 id="result"></h3>
+
+<script>
+let video = document.getElementById("video");
+
+navigator.mediaDevices.getUserMedia({video:true})
+.then(stream=>{
+video.srcObject = stream;
+setInterval(sendFrame,1000);
+});
+
+function sendFrame(){
+let canvas=document.createElement("canvas");
+canvas.width=video.videoWidth;
+canvas.height=video.videoHeight;
+canvas.getContext("2d").drawImage(video,0,0);
+
+fetch("/webcam_predict",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({image:canvas.toDataURL("image/jpeg")})
+})
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("result").innerText=data.result;
+});
+}
+</script>
+</body>
+</html>

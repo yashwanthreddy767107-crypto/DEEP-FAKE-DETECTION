@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🔥 Webcam Heatmap</title>
+</head>
+
+<body style="text-align:center; background:black; color:white;">
+
+<h2>🔥 Live Webcam Heatmap</h2>
+
+<video id="video" autoplay width="500"></video>
+<br>
+<img id="output" width="500">
+
+<h3 id="result">Waiting...</h3>
+
+<button onclick="startCamera()">Start Camera</button>
+
+<script>
+let video = document.getElementById("video");
+let output = document.getElementById("output");
+
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        video.srcObject = stream;
+        setInterval(sendFrame, 1000);
+    });
+}
+
+function sendFrame() {
+    let canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+
+    let data = canvas.toDataURL("image/jpeg");
+
+    fetch("/webcam_heatmap_predict", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({image:data})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerText = data.result;
+        output.src = data.image;
+    });
+}
+</script>
+
+</body>
+</html>
