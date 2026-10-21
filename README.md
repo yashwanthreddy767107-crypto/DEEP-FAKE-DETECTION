@@ -1,5 +1,6 @@
 **PROJECT : AI Deepfake Detection System**
 **1. ABSTRACT**
+
 The rapid advancement of Artificial Intelligence has led to the creation of deepfake content, which manipulates images, videos, and audio to appear realistic. This project presents an AI-based system capable of detecting deepfake content across multiple media formats including images, videos, voice, and live webcam streams.
 The system utilizes Deep Learning models for visual data and Machine Learning techniques for audio analysis. Additionally, it incorporates heatmap visualization using Grad-CAM to highlight manipulated regions, providing a reliable tool for enhancing digital security and media authenticity.
 
